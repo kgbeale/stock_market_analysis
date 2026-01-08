@@ -1,3 +1,5 @@
+'use strict';
+
 let request = require('request');
 
 let api_key = "STNE15X0T16UDA4F";

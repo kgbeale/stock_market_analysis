@@ -48,6 +48,12 @@ if __name__ == '__main__':
     csv_filename = "global_quote_endpoint.csv"
     data: dict = fetch_data(update = False, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true if need new data
+    # Put dictionary into pandas dataframe
+    # Rename columns to remove numbers (ex. '01. symbol' becomes just 'symbol')
+    # Something to do in the future: Plot data
+    # Create another pandas dataframe with just 2 columns (symbol, quantity), default value 1000 for both
+    print(data)
+    
 
 # No longer need an external file keeping track of run times, program now throws "KeyboardInterrupt" error
 # if run again before previous run is complete
@@ -58,3 +64,5 @@ if __name__ == '__main__':
 # tickers are processed
 
 # Also spreading out the calls evenly will ensure the rate limit will never be hit
+
+# log data to mysql database

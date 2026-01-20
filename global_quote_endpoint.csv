@@ -1,4 +1,4 @@
-,Global Quote.01. symbol,Global Quote.02. open,Global Quote.03. high,Global Quote.04. low,Global Quote.05. price,Global Quote.06. volume,Global Quote.07. latest trading day,Global Quote.08. previous close,Global Quote.09. change,Global Quote.10. change percent
+,symbol,open,high,low,price,volume,latest trading day,previous close,change,change percent
 0,IBM,295.7700,299.1900,294.2500,294.9700,4189960,2026-01-05,291.5000,3.4700,1.1904%
 1,MSFT,474.0550,476.0700,469.5000,472.8500,25250260,2026-01-05,472.9400,-0.0900,-0.0190%
 2,AAPL,270.6400,271.5100,266.1400,267.2600,45647190,2026-01-05,271.0100,-3.7500,-1.3837%

@@ -28,10 +28,6 @@ def fetch_data(*, update: bool = False, json_cache: str):
             elapsed = time.time() - start
             sleep_time = max(0, interval - elapsed)
             time.sleep(sleep_time)
-
-        # Convert json to csv without reading external file
-        df = pd.json_normalize(json_data) # converts semi-structured json data into flat table (dataframe)
-        df.to_csv(csv_filename)
     
         # Store new data in local cache
         with open(json_cache, "w") as f:
@@ -46,14 +42,42 @@ if __name__ == '__main__':
     interval = 60.0 / calls_per_minute  # Time between calls in seconds
     json_cache = "global_quote_endpoint.json"
     csv_filename = "global_quote_endpoint.csv"
-    data: dict = fetch_data(update = False, json_cache = json_cache) # Call function to fetch existing data or make new api call
+    data = fetch_data(update = False, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true if need new data
-    # Put dictionary into pandas dataframe
+
     # Rename columns to remove numbers (ex. '01. symbol' becomes just 'symbol')
+    # split keys and remove if they can be converted to int
+    new_data = [] # Create new list to store updated data
+    for i in range(len(data)):
+        for key, value in data[i].items():
+            new_value = {}
+            for key1, value1 in value.items():
+                parts = key1.split('. ')
+                for part in parts:
+                    new_value[part] = value1
+            keys_to_remove = []
+            for key2, value2 in new_value.items():
+                try:
+                    int(key2)
+                    keys_to_remove.append(key2)
+                except ValueError:
+                    continue
+            for j in keys_to_remove:
+                del new_value[j]
+            new_data.append(new_value)
+
+    # Export data into csv file
+    df = pd.DataFrame(new_data)
+    df.to_csv(csv_filename)
+
     # Something to do in the future: Plot data
     # Create another pandas dataframe with just 2 columns (symbol, quantity), default value 1000 for both
-    print(data)
-    
+    symbol_quant = []
+    symbol_quant_csv = "symbol_quantity.csv"
+    symbol_quant_dict = {'symbol': '1000', 'quantity': '1000'}
+    symbol_quant.append(symbol_quant_dict)
+    df = pd.DataFrame(symbol_quant)
+    df.to_csv(symbol_quant_csv)
 
 # No longer need an external file keeping track of run times, program now throws "KeyboardInterrupt" error
 # if run again before previous run is complete

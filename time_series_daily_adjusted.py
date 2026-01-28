@@ -46,46 +46,7 @@ if __name__ == '__main__':
     data = fetch_data(update = True, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true for new data
 
-    # Rename columns to remove numbers (ex. '01. symbol' becomes just 'symbol')
-    # split keys and remove if they can be converted to int
-
-    # global_qoute = data["Global Quote Endpoint"]
-    #
-    # df = (pd.DataFrame.from_dict(quote_endpoint, orient="index")
-    #       .rename_axis("date")
-    #       .reset_index())
-
-    # Above code is good for renaming single columns, below code is good renaming all columns
-    # Below code is also good for iterating through nested dictionaries
-    new_data = [] # Create new list to store updated data
-    for i in range(len(data)):
-        def rename_columns(d):
-            new_dict = {} # Create new dictionary with modified key names
-            for key, value in d.items():
-                if isinstance(value, dict):
-                    rename_columns(value)
-                else:
-                    parts = key.split('. ')
-                    for part in parts:
-                        new_dict[part] = value
-                    keys_to_remove = []
-                    for key1, value1 in new_dict.items():
-                        try:
-                            int(key1)
-                            keys_to_remove.append(key1)
-                        except ValueError:
-                            continue
-                    for j in keys_to_remove:
-                        del new_dict[j]               
-            # Append new dict to list if dict is not empty
-            if new_dict:
-                new_data.append(new_dict)
-
-        rename_columns(data[i]) # Call function to rename columns
-    # Export data into csv file
-    # df = pd.DataFrame(new_data)
-    # df.to_csv(csv_filename)
-
+    # Export data to csv
     df = pd.json_normalize(data)
     df.to_csv(csv_filename)
 

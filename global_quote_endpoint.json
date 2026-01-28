@@ -2,57 +2,57 @@
     {
         "Global Quote": {
             "01. symbol": "IBM",
-            "02. open": "297.1600",
-            "03. high": "297.3300",
-            "04. low": "293.2700",
-            "05. price": "293.8600",
-            "06. volume": "2944722",
-            "07. latest trading day": "2026-01-27",
-            "08. previous close": "296.3300",
-            "09. change": "-2.4700",
-            "10. change percent": "-0.8335%"
+            "02. open": "293.5300",
+            "03. high": "295.9500",
+            "04. low": "291.2601",
+            "05. price": "294.1100",
+            "06. volume": "5690618",
+            "07. latest trading day": "2026-01-28",
+            "08. previous close": "293.8600",
+            "09. change": "0.2500",
+            "10. change percent": "0.0851%"
         }
     },
     {
         "Global Quote": {
             "01. symbol": "MSFT",
-            "02. open": "473.7000",
-            "03. high": "482.8700",
-            "04. low": "473.1600",
-            "05. price": "480.5800",
-            "06. volume": "29088664",
-            "07. latest trading day": "2026-01-27",
-            "08. previous close": "470.2800",
-            "09. change": "10.3000",
-            "10. change percent": "2.1902%"
+            "02. open": "483.4300",
+            "03. high": "483.7400",
+            "04. low": "478.0000",
+            "05. price": "481.6300",
+            "06. volume": "33738475",
+            "07. latest trading day": "2026-01-28",
+            "08. previous close": "480.5800",
+            "09. change": "1.0500",
+            "10. change percent": "0.2185%"
         }
     },
     {
         "Global Quote": {
             "01. symbol": "AAPL",
-            "02. open": "259.1700",
-            "03. high": "261.9500",
-            "04. low": "258.2100",
-            "05. price": "258.2700",
-            "06. volume": "48787855",
-            "07. latest trading day": "2026-01-27",
-            "08. previous close": "255.4100",
-            "09. change": "2.8600",
-            "10. change percent": "1.1198%"
+            "02. open": "257.6400",
+            "03. high": "258.8550",
+            "04. low": "254.5100",
+            "05. price": "256.4400",
+            "06. volume": "40138254",
+            "07. latest trading day": "2026-01-28",
+            "08. previous close": "258.2700",
+            "09. change": "-1.8300",
+            "10. change percent": "-0.7086%"
         }
     },
     {
         "Global Quote": {
             "01. symbol": "UBS",
-            "02. open": "49.2300",
-            "03. high": "49.3600",
-            "04. low": "48.7900",
-            "05. price": "49.2500",
-            "06. volume": "1899048",
-            "07. latest trading day": "2026-01-27",
-            "08. previous close": "48.0300",
-            "09. change": "1.2200",
-            "10. change percent": "2.5401%"
+            "02. open": "48.2700",
+            "03. high": "48.6050",
+            "04. low": "47.4000",
+            "05. price": "47.9600",
+            "06. volume": "2381345",
+            "07. latest trading day": "2026-01-28",
+            "08. previous close": "49.2500",
+            "09. change": "-1.2900",
+            "10. change percent": "-2.6193%"
         }
     }
 ]

@@ -3,11 +3,21 @@
         "Meta Data": {
             "1. Information": "Daily Time Series with Splits and Dividend Events",
             "2. Symbol": "IBM",
-            "3. Last Refreshed": "2026-01-27",
+            "3. Last Refreshed": "2026-01-28",
             "4. Output Size": "Compact",
             "5. Time Zone": "US/Eastern"
         },
         "Time Series (Daily)": {
+            "2026-01-28": {
+                "1. open": "293.53",
+                "2. high": "295.95",
+                "3. low": "291.2601",
+                "4. close": "294.11",
+                "5. adjusted close": "294.11",
+                "6. volume": "5628994",
+                "7. dividend amount": "0.0000",
+                "8. split coefficient": "1.0"
+            },
             "2026-01-27": {
                 "1. open": "297.16",
                 "2. high": "297.33",
@@ -997,16 +1007,6 @@
                 "6. volume": "3147478",
                 "7. dividend amount": "0.0000",
                 "8. split coefficient": "1.0"
-            },
-            "2025-09-04": {
-                "1. open": "245.42",
-                "2. high": "249.28",
-                "3. low": "242.85",
-                "4. close": "247.18",
-                "5. adjusted close": "245.84393487983",
-                "6. volume": "4765087",
-                "7. dividend amount": "0.0000",
-                "8. split coefficient": "1.0"
             }
         }
     },
@@ -1014,11 +1014,21 @@
         "Meta Data": {
             "1. Information": "Daily Time Series with Splits and Dividend Events",
             "2. Symbol": "MSFT",
-            "3. Last Refreshed": "2026-01-27",
+            "3. Last Refreshed": "2026-01-28",
             "4. Output Size": "Compact",
             "5. Time Zone": "US/Eastern"
         },
         "Time Series (Daily)": {
+            "2026-01-28": {
+                "1. open": "483.43",
+                "2. high": "483.74",
+                "3. low": "478.0",
+                "4. close": "481.63",
+                "5. adjusted close": "481.63",
+                "6. volume": "32668815",
+                "7. dividend amount": "0.0000",
+                "8. split coefficient": "1.0"
+            },
             "2026-01-27": {
                 "1. open": "473.7",
                 "2. high": "482.87",
@@ -2008,16 +2018,6 @@
                 "6. volume": "31994846",
                 "7. dividend amount": "0.0000",
                 "8. split coefficient": "1.0"
-            },
-            "2025-09-04": {
-                "1. open": "504.3",
-                "2. high": "508.15",
-                "3. low": "503.15",
-                "4. close": "507.97",
-                "5. adjusted close": "507.005647557058",
-                "6. volume": "15509486",
-                "7. dividend amount": "0.0000",
-                "8. split coefficient": "1.0"
             }
         }
     },
@@ -2025,11 +2025,21 @@
         "Meta Data": {
             "1. Information": "Daily Time Series with Splits and Dividend Events",
             "2. Symbol": "AAPL",
-            "3. Last Refreshed": "2026-01-27",
+            "3. Last Refreshed": "2026-01-28",
             "4. Output Size": "Compact",
             "5. Time Zone": "US/Eastern"
         },
         "Time Series (Daily)": {
+            "2026-01-28": {
+                "1. open": "257.64",
+                "2. high": "258.855",
+                "3. low": "254.51",
+                "4. close": "256.44",
+                "5. adjusted close": "256.44",
+                "6. volume": "40047383",
+                "7. dividend amount": "0.0000",
+                "8. split coefficient": "1.0"
+            },
             "2026-01-27": {
                 "1. open": "259.17",
                 "2. high": "261.95",
@@ -3019,16 +3029,6 @@
                 "6. volume": "54870397",
                 "7. dividend amount": "0.0000",
                 "8. split coefficient": "1.0"
-            },
-            "2025-09-04": {
-                "1. open": "238.45",
-                "2. high": "239.8999",
-                "3. low": "236.74",
-                "4. close": "239.78",
-                "5. adjusted close": "239.548835329452",
-                "6. volume": "47549429",
-                "7. dividend amount": "0.0000",
-                "8. split coefficient": "1.0"
             }
         }
     },
@@ -3036,11 +3036,21 @@
         "Meta Data": {
             "1. Information": "Daily Time Series with Splits and Dividend Events",
             "2. Symbol": "UBS",
-            "3. Last Refreshed": "2026-01-27",
+            "3. Last Refreshed": "2026-01-28",
             "4. Output Size": "Compact",
             "5. Time Zone": "US/Eastern"
         },
         "Time Series (Daily)": {
+            "2026-01-28": {
+                "1. open": "48.27",
+                "2. high": "48.605",
+                "3. low": "47.4",
+                "4. close": "47.96",
+                "5. adjusted close": "47.96",
+                "6. volume": "2381340",
+                "7. dividend amount": "0.0000",
+                "8. split coefficient": "1.0"
+            },
             "2026-01-27": {
                 "1. open": "49.23",
                 "2. high": "49.36",
@@ -4028,16 +4038,6 @@
                 "4. close": "40.36",
                 "5. adjusted close": "40.36",
                 "6. volume": "2085561",
-                "7. dividend amount": "0.0000",
-                "8. split coefficient": "1.0"
-            },
-            "2025-09-04": {
-                "1. open": "40.07",
-                "2. high": "40.46",
-                "3. low": "40.03",
-                "4. close": "40.43",
-                "5. adjusted close": "40.43",
-                "6. volume": "1304174",
                 "7. dividend amount": "0.0000",
                 "8. split coefficient": "1.0"
             }

@@ -48,53 +48,32 @@ if __name__ == '__main__':
 
     # Rename columns to remove numbers (ex. '01. symbol' becomes just 'symbol')
     # split keys and remove if they can be converted to int
+    new_data = [] # Create new list to store updated data
+    for i in range(len(data)):
+        for key, value in data[i].items():
+            new_value = {}
+            for key1, value1 in value.items():
+                parts = key1.split('. ')
+                for part in parts:
+                    new_value[part] = value1
+            keys_to_remove = []
+            for key2, value2 in new_value.items():
+                try:
+                    int(key2)
+                    keys_to_remove.append(key2)
+                except ValueError:
+                    continue
+            for j in keys_to_remove:
+                del new_value[j]
+            new_data.append(new_value)
 
-    # global_qoute = data["Global Quote Endpoint"]
-    #
-    # df = (pd.DataFrame.from_dict(quote_endpoint, orient="index")
-    #       .rename_axis("date")
-    #       .reset_index())
-
-    # Above code is good for renaming single columns, below code is good renaming all columns
-    # Below code is also good for iterating through nested dictionaries
-    # new_data = [] # Create new list to store updated data
-    # for i in range(len(data)):
-    #     def rename_columns(d):
-    #         new_dict = {} # Create new dictionary with modified key names
-    #         for key, value in d.items():
-    #             if isinstance(value, dict):
-    #                 rename_columns(value)
-    #             else:
-    #                 parts = key.split('. ')
-    #                 for part in parts:
-    #                     new_dict[part] = value
-    #                 keys_to_remove = []
-    #                 for key1, value1 in new_dict.items():
-    #                     try:
-    #                         int(key1)
-    #                         keys_to_remove.append(key1)
-    #                     except ValueError:
-    #                         continue
-    #                 for j in keys_to_remove:
-    #                     del new_dict[j]               
-    #         # Append new dict to list if dict is not empty
-    #         if new_dict:
-    #             new_data.append(new_dict)
-
-    #     rename_columns(data[i]) # Call function to rename columns
-    
     # Export data into csv file
-    # df = pd.DataFrame(new_data)
-    # df.to_csv(csv_filename)
-
-    # Export data to csv
-    df = pd.json_normalize(data)
+    df = pd.DataFrame(new_data)
     df.to_csv(csv_filename)
-    # Rename columns
 
     # Create another pandas dataframe with just 2 columns (symbol, quantity), default value 1000 for both
     symbol_quantity = []
-    symbol_quantity_csv = "global_quote_symbol_quantity.csv"
+    symbol_quantity_csv = "symbol_quantity.csv"
     symbol_quantity_dict = {'symbol': '1000', 'quantity': '1000'}
     symbol_quantity.append(symbol_quantity_dict)
     df = pd.DataFrame(symbol_quantity)
@@ -135,12 +114,3 @@ if __name__ == '__main__':
 # Also spreading out the calls evenly will ensure the rate limit will never be hit
 
 # Something to do in the future: Plot data
-
-# Start this week: Real world stock analysis using code I've already developed
-# Couple more things need to be done here first
-# Course focused on financial market analysis using Python Pandas
-# Use data from Time Series Daily Adjusted endpoint (same code as I have here,
-# change names of files and update url to pull from Time Series Daily Adjusted)
-# Only use one ticker for now
-# Time Series Daily Adjusted shows last 100 days
-# Create new file so that the global quote code is saved

@@ -19,7 +19,7 @@ def fetch_data(*, update: bool = False, json_cache: str):
     if not json_data:
         json_data = []
         for i in range(len(tickers)):
-            url = f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={tickers[i]}&apikey={api_key}'
+            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={tickers[i]}&apikey={api_key}'
             r = requests.get(url)
             data = r.json()
             json_data.append(data)
@@ -41,39 +41,57 @@ if __name__ == '__main__':
     tickers = ["IBM", "MSFT", "AAPL", "UBS"]
     calls_per_minute = 75
     interval = 60.0 / calls_per_minute  # Time between calls in seconds
-    json_cache = "global_quote_endpoint.json"
-    csv_filename = "global_quote_endpoint.csv"
+    json_cache = "time_series_daily_adjusted.json"
+    csv_filename = "time_series_daily_adjusted.csv"
     data = fetch_data(update = True, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true for new data
 
     # Rename columns to remove numbers (ex. '01. symbol' becomes just 'symbol')
     # split keys and remove if they can be converted to int
+
+    # global_qoute = data["Global Quote Endpoint"]
+    #
+    # df = (pd.DataFrame.from_dict(quote_endpoint, orient="index")
+    #       .rename_axis("date")
+    #       .reset_index())
+
+    # Above code is good for renaming single columns, below code is good renaming all columns
+    # Below code is also good for iterating through nested dictionaries
     new_data = [] # Create new list to store updated data
     for i in range(len(data)):
-        for key, value in data[i].items():
-            new_value = {}
-            for key1, value1 in value.items():
-                parts = key1.split('. ')
-                for part in parts:
-                    new_value[part] = value1
-            keys_to_remove = []
-            for key2, value2 in new_value.items():
-                try:
-                    int(key2)
-                    keys_to_remove.append(key2)
-                except ValueError:
-                    continue
-            for j in keys_to_remove:
-                del new_value[j]
-            new_data.append(new_value)
+        def rename_columns(d):
+            new_dict = {} # Create new dictionary with modified key names
+            for key, value in d.items():
+                if isinstance(value, dict):
+                    rename_columns(value)
+                else:
+                    parts = key.split('. ')
+                    for part in parts:
+                        new_dict[part] = value
+                    keys_to_remove = []
+                    for key1, value1 in new_dict.items():
+                        try:
+                            int(key1)
+                            keys_to_remove.append(key1)
+                        except ValueError:
+                            continue
+                    for j in keys_to_remove:
+                        del new_dict[j]               
+            # Append new dict to list if dict is not empty
+            if new_dict:
+                new_data.append(new_dict)
 
+        rename_columns(data[i]) # Call function to rename columns
     # Export data into csv file
-    df = pd.DataFrame(new_data)
+    # df = pd.DataFrame(new_data)
+    # df.to_csv(csv_filename)
+
+    df = pd.json_normalize(data)
     df.to_csv(csv_filename)
 
     # Create another pandas dataframe with just 2 columns (symbol, quantity), default value 1000 for both
     symbol_quantity = []
-    symbol_quantity_csv = "symbol_quantity.csv"
+    symbol_quantity_csv = "time_series_symbol_quantity.csv"
     symbol_quantity_dict = {'symbol': '1000', 'quantity': '1000'}
     symbol_quantity.append(symbol_quantity_dict)
     df = pd.DataFrame(symbol_quantity)
@@ -86,7 +104,7 @@ if __name__ == '__main__':
     DB_HOST = 'localhost'
     DB_NAME = 'stock_apis'
     CSV_FILE_PATH = csv_filename
-    TABLE_NAME = 'global_quote_endpoint'
+    TABLE_NAME = 'time_series_daily_adjusted'
 
     # Create a database engine using SQLAlchemy
     engine = create_engine(f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}')
@@ -102,15 +120,3 @@ if __name__ == '__main__':
 
     # Close the connection (handled by the engine implicitly, but good practice to be aware)
     engine.dispose()
-
-# No longer need an external file keeping track of run times, program now throws "KeyboardInterrupt" error
-# if run again before previous run is complete
-
-# "KeyboardInterrupt" error cancels the last run and immediately proceeds with the new run
-
-# With the calls evenly spread out with time.sleep(), program will not be able to run again until all 
-# tickers are processed
-
-# Also spreading out the calls evenly will ensure the rate limit will never be hit
-
-# Something to do in the future: Plot data

@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     # Convert json to dataframe
     df = pd.json_normalize(data)
+    print(data)
 
     # Rename columns and export to csv
     new_column_names = [] # Create list to store new column names

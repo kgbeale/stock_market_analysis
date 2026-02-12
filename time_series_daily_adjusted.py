@@ -1,8 +1,8 @@
 import time
-import datetime
 import requests
 import pandas as pd
 import json
+from datetime import datetime
 from sqlalchemy import create_engine
 
 # If file exists and no new updates, fetch data from existing file
@@ -39,7 +39,7 @@ def fetch_data(*, update: bool = False, json_cache: str):
 
 if __name__ == '__main__':
     api_key = "STNE15X0T16UDA4F"
-    tickers = ["UBS"]
+    tickers = ["UBS", "IBM"]
     calls_per_minute = 75
     interval = 60.0 / calls_per_minute  # Time between calls in seconds
     json_cache = "time_series_daily_adjusted.json"
@@ -47,9 +47,56 @@ if __name__ == '__main__':
     data = fetch_data(update = True, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true for new data
 
-    # Export data to csv
-    df = pd.json_normalize(data)
+    # Create lists for each column to be added to dataframe
+    index = 0 # set initial index to 0
+    index_list = [] # index list
+    ticker_list = [] # ticker list
+    date_list = [] # date list
+    adjusted_close_list = [] # adjusted close list
+
+    # Loop through data and append to lists
+    for i in range(len(data)):
+        for key, value in data[i].items():
+            for key1, value1 in value.items():
+                try:
+                    format = '%Y-%m-%d'
+                    datetime.strptime(key1, format)
+                    new_dict = {}
+                    for key2, value2 in value1.items(): 
+                        parts = key2.split('. ')
+                        for part in parts:
+                            new_dict[part] = value2
+                        keys_to_remove = []
+                        for key3, value3 in new_dict.items():
+                            try:
+                                int(key3)
+                                keys_to_remove.append(key3)
+                            except ValueError:
+                                continue
+                        for j in keys_to_remove:
+                            del new_dict[j]
+                    index += 1
+                    index_list.append(index)
+                    ticker_list.append(tickers[i])
+                    date_list.append(key1)
+                    adjusted_close_list.append(new_dict['adjusted close'])
+                except ValueError:
+                    continue
+    
+    # create dictionary of each list and then convert to dataframe
+    time_series_dict = {"Index": index_list, "Ticker": ticker_list, "Date": date_list,
+                   "Adjusted Close Price" : adjusted_close_list}
+    df = pd.DataFrame(time_series_dict)
     df.to_csv(csv_filename)
+
+    # Date column for dates in dataframe
+    # df = (pd.DataFrame.from_dict(time_series=, orient="index")
+    #.rename_axis("date")
+    #.reset_index())
+
+    # df["date"] = pd.to_datetime(df["date"])
+    # df["close_price"] = df["5. adjusted close"].astype(float)
+    # df = df.sort_values("date").reset_index(drop=True)
 
     # Create another pandas dataframe with just 2 columns (symbol, quantity), default value 1000 for both
     symbol_quantity = []
@@ -82,3 +129,6 @@ if __name__ == '__main__':
 
     # Close the connection (handled by the engine implicitly, but good practice to be aware)
     engine.dispose()
+
+    # Took screenshot of ideal dataframe format
+    # Try multiple tickers

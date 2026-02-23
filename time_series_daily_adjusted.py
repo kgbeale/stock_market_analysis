@@ -4,6 +4,10 @@ import pandas as pd
 import json
 from datetime import datetime
 from sqlalchemy import create_engine
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+from sklearn.metrics import r2_score
 
 # If file exists and no new updates, fetch data from existing file
 def fetch_data(*, update: bool = False, json_cache: str):
@@ -39,12 +43,12 @@ def fetch_data(*, update: bool = False, json_cache: str):
 
 if __name__ == '__main__':
     api_key = "STNE15X0T16UDA4F"
-    tickers = ["SPY"]
+    tickers = ["SPY", "VOOG"]
     calls_per_minute = 75
     interval = 60.0 / calls_per_minute  # Time between calls in seconds
     json_cache = "time_series_daily_adjusted.json"
     csv_filename = "time_series_daily_adjusted.csv"
-    data = fetch_data(update = False, json_cache = json_cache) # Call function to fetch existing data or make new api call
+    data = fetch_data(update = True, json_cache = json_cache) # Call function to fetch existing data or make new api call
     # Set update to true for new data
 
     # Create lists for each column to be added to dataframe
@@ -77,18 +81,42 @@ if __name__ == '__main__':
     df['Return'] = df['Adjusted Close Price'].pct_change()
     df['Date'] = pd.to_datetime(df['Date'])
 
-    df1 = pd.read_csv('returns_sample.csv')
-    # df1['Return'] = pd.to_numeric(df1['Return'], errors='coerce') # KGB column disappeared after adding this line
-
-    df1['Date'] = pd.to_datetime(df1['Date'])
-    combined_df = pd.concat([df, df1], ignore_index=True)
-    combined_df = combined_df.dropna(subset=['Return'])
-    wide_df = combined_df.pivot(index='Date', columns='Ticker', values='Return')
+    # # df1 = pd.read_csv('returns_sample.csv')
+    # df1['Return'] = df1['Return'].astype('str').str.replace('%', '', regex=False)
+    # df1['Return'] = pd.to_numeric(df1['Return'], errors='coerce')
+    # df1['Date'] = pd.to_datetime(df1['Date'])
+    # combined_df = pd.concat([df, df1], ignore_index=True)
+    # combined_df = combined_df.dropna(subset=['Return'])
+    wide_df = df.pivot(index='Date', columns='Ticker', values='Return')
     for i in range(len(wide_df.columns)):
-        wide_df = wide_df.dropna(subset=wide_df.columns[i])
+        wide_df = wide_df.dropna(subset=wide_df.columns[i]) # Drop rows that have 'NaN' values
+    wide_df['Diff'] = wide_df['SPY'] - wide_df['VOOG']
+    wide_df['cumret_spy'] = (1+wide_df['SPY']).cumprod()-1
+    wide_df['cumret_VOOG'] = (1+wide_df['VOOG']).cumprod()-1
     print(wide_df)
     wide_df.to_csv(csv_filename)
-    # Drop rows that have 'NaN' values
+    sns.regplot(x=wide_df['SPY'], y=wide_df['VOOG'])
+    plt.title('Beta Visualization: Stock vs Market')
+    plt.xlabel('Market Returns')
+    plt.ylabel('Stock Returns')
+    # plt.show()
+    # Calculate beta
+    lin_reg = linregress(wide_df['SPY'], wide_df['VOOG']) # calculate slope and intercept
+    beta = lin_reg.slope # slope represents the beta of the stock
+    print("Beta: ", beta)
+
+    # Check how beta calculation compares to online beta
+    # UBS Beta:
+    # Calculated .79 for last 100 days
+    # 5 year beta is .89
+
+    # Calculate R-Squared
+    y_pred = (beta * wide_df['SPY']) + lin_reg.intercept # calculate predicted values for y
+    r2 = r2_score(wide_df['VOOG'], y_pred)
+    print('R-Squared: ', r2)
+
+    # VOOG -> Replace UBS with VOOG, see how the graph changes
+    # Clean up code if time permits
 
     # merged_df = pd.merge(df, df1, on='Date') # make sure merge column is the same datatype on both dataframes
     # print(merged_df)
